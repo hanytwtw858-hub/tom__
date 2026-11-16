@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المخازن والمحلات</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>📦 مدير المخازن والمحلات</h1>
+    <button onclick="exportBackup()" class="btn-backup">💾 حفظ نسخة احتياطية</button>
+</header>
+
+<nav>
+    <button class="active" onclick="showTab('inventory', this)">1. المنتجات والمخزن</button>
+    <button onclick="showTab('sales', this)">2. المبيعات (صادر)</button>
+    <button onclick="showTab('purchases', this)">3. المشتريات (وارد)</button>
+    <button onclick="showTab('customers', this)">4. بيانات العملاء</button>
+</nav>
+
+<div class="container">
+
+    <!-- إحصائيات سريعة -->
+    <div class="stats">
+        <div class="stat-box"><h3>عدد الأصناف بالمخزن</h3><p id="stat-products">0</p></div>
+        <div class="stat-box stat-sales"><h3>إجمالي المبيعات</h3><p id="stat-sales">0 ج.م</p></div>
+        <div class="stat-box stat-purchases"><h3>إجمالي المشتريات</h3><p id="stat-purchases">0 ج.م</p></div>
+        <div class="stat-box stat-customers"><h3>عدد العملاء</h3><p id="stat-customers">0</p></div>
+    </div>
+
+    <!-- 1. صفحة المنتجات والمخزن -->
+    <div id="inventory" class="section active">
+        <div class="card">
+            <h2>إضافة منتج جديد للمخزن</h2>
+            <form id="product-form" class="form-grid">
+                <div class="form-group">
+                    <label>اسم المنتج</label>
+                    <input type="text" id="prod-name" required placeholder="مثال: شاحن سامسونج">
+                </div>
+                <div class="form-group">
+                    <label>سعر الشراء</label>
+                    <input type="number" id="prod-buy" required min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>سعر البيع</label>
+                    <input type="number" id="prod-sell" required min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>الكمية الحالية</label>
+                    <input type="number" id="prod-qty" required min="0">
+                </div>
+                <button type="submit" class="btn-submit">+ إضافة للمخزن</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>جرد المخزن الحالي</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>اسم المنتج</th>
+                        <th>سعر الشراء</th>
+                        <th>سعر البيع</th>
+                        <th>الكمية المتاحة</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. صفحة المبيعات -->
+    <div id="sales" class="section">
+        <div class="card">
+            <h2>تسجيل عملية بيع جديدة</h2>
+            <form id="sale-form" class="form-grid">
+                <div class="form-group">
+                    <label>العميل</label>
+                    <select id="sale-customer" required></select>
+                </div>
+                <div class="form-group">
+                    <label>المنتج</label>
+                    <select id="sale-product" required></select>
+                </div>
+                <div class="form-group">
+                    <label>الكمية المباعة</label>
+                    <input type="number" id="sale-qty" required min="1" value="1">
+                </div>
+                <button type="submit" class="btn-submit">تسجيل البيع وخصم من المخزن</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>سجل المبيعات</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>العميل</th>
+                        <th>المنتج</th>
+                        <th>الكمية</th>
+                        <th>سعر الوحدة</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="sales-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 3. صفحة المشتريات -->
+    <div id="purchases" class="section">
+        <div class="card">
+            <h2>تسجيل فاتورة مشتريات (إضافة بضاعة للمخزن)</h2>
+            <form id="purchase-form" class="form-grid">
+                <div class="form-group">
+                    <label>اسم المورد / الشركة</label>
+                    <input type="text" id="pur-supplier" required placeholder="مثال: شركة النور">
+                </div>
+                <div class="form-group">
+                    <label>المنتج</label>
+                    <select id="pur-product" required></select>
+                </div>
+                <div class="form-group">
+                    <label>الكمية المشتراة</label>
+                    <input type="number" id="pur-qty" required min="1" value="1">
+                </div>
+                <div class="form-group">
+                    <label>سعر شراء القطعة</label>
+                    <input type="number" id="pur-cost" required min="0" step="0.01">
+                </div>
+                <button type="submit" class="btn-submit">حفظ وإضافة للمخزن</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>سجل المشتريات</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>المورد</th>
+                        <th>المنتج</th>
+                        <th>الكمية</th>
+                        <th>التكلفة للقطعة</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="purchases-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 4. صفحة بيانات العملاء -->
+    <div id="customers" class="section">
+        <div class="card">
+            <h2>إضافة عميل جديد</h2>
+            <form id="customer-form" class="form-grid">
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="cust-name" required placeholder="الاسم بالكامل">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="text" id="cust-phone" required placeholder="01xxxxxxxxx">
+                </div>
+                <div class="form-group">
+                    <label>العنوان / ملاحظات</label>
+                    <input type="text" id="cust-address" placeholder="العنوان أو أي ملاحظة">
+                </div>
+                <button type="submit" class="btn-submit">+ حفظ العميل</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>قائمة العملاء</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>اسم العميل</th>
+                        <th>رقم الهاتف</th>
+                        <th>العنوان</th>
+                        <th>إجمالي مشترياته</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="customers-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

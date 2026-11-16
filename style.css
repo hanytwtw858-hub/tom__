@@ -1,0 +1,209 @@
+:root {
+    --primary: #1e293b;
+    --secondary: #3b82f6;
+    --success: #10b981;
+    --danger: #ef4444;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: #333;
+}
+
+/* القائمة العلوية والتنقل */
+header {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.btn-backup {
+    background: #475569;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-backup:hover {
+    background: #64748b;
+}
+
+nav {
+    background: #334155;
+    display: flex;
+    gap: 10px;
+    padding: 10px 25px;
+    flex-wrap: wrap;
+}
+
+nav button {
+    background: transparent;
+    color: #cbd5e1;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+nav button:hover,
+nav button.active {
+    background: var(--secondary);
+    color: white;
+}
+
+/* الحاوية والأقسام */
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* الكروت والنماذج */
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: var(--primary);
+    border-bottom: 2px solid var(--bg);
+    padding-bottom: 10px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    align-items: end;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button.btn-submit {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button.btn-submit:hover {
+    opacity: 0.9;
+}
+
+button.btn-danger {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* الجداول */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: right;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    background-color: #f8fafc;
+    color: var(--primary);
+}
+
+.low-stock {
+    color: var(--danger);
+    font-weight: bold;
+}
+
+/* شريط الإحصائيات */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-right: 4px solid var(--secondary);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.stat-sales { border-color: var(--success); }
+.stat-purchases { border-color: #f59e0b; }
+.stat-customers { border-color: #8b5cf6; }
+
+.stat-box h3 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.stat-box p {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary);
+}
